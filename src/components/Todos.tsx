@@ -14,6 +14,18 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
 import AddTodoDialog from "./AddTodoDialog"
+import TodoListItem from "./TodoListItem"
+
+
+type Todo = {
+  title: string;
+  note: string;
+  checked: boolean;
+  tags: {
+    priority: 'very low' | 'low' | 'medium' | 'high' | 'very high';
+    deadline: [string, string];
+  };
+};
 
 export default function Todos(){
     const [checked, setChecked] = React.useState<number[]>([0]);
@@ -26,6 +38,8 @@ export default function Todos(){
       }>
     >([]);
 
+
+
     const handleToggle = (value: number) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
@@ -37,6 +51,10 @@ export default function Todos(){
         }
 
         setChecked(newChecked);
+    };
+
+    const onClose = (todo: Todo) => {
+        setTodoList([...todoList, todo]);
     };
 
     React.useEffect(() => {
@@ -75,7 +93,7 @@ export default function Todos(){
             checked: false,
             tags: {
               priority: 'medium',
-              deadline: ['2026-01-29', '2026-01-29'] as [string, string],
+              deadline: ['2026-01-28', '2026-01-29'] as [string, string],
             },
           },
           {
@@ -120,52 +138,22 @@ export default function Todos(){
       setTodoList(returnx.todos, );
     }, []);
 
-    const renderPriorityIcon = (priority: string) => {
-      switch (priority) {
-        case 'very high':
-          return <KeyboardDoubleArrowUpRoundedIcon />;
-        case 'high':
-          return <KeyboardArrowUpRoundedIcon />;
-        case 'medium':
-          return <HorizontalRuleRoundedIcon />;
-        case 'low':
-          return <KeyboardArrowDownRoundedIcon />;
-        default:
-          return <KeyboardDoubleArrowDownRoundedIcon />;
-      }
-    };
-
   return (
       <div>
-      <AddTodoDialog/>
+      <AddTodoDialog onClose={onClose}/>
       <h1>Heute</h1>
 
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {todoList.map((value, index) => {
-        const labelId = `checkbox-list-label-${index}`;
-
+        const key = `${value.title}-${value.tags.deadline[0]}`;
         return (
-          <ListItem
-            key={value.title}
-            secondaryAction={
-              <div>
-                {renderPriorityIcon(value.tags.priority)}
-              </div>
-            }
-          >
-            <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checked.includes(index)}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={value.title} />
-            </ListItemButton>
-          </ListItem>
+          <TodoListItem
+            key={key}
+            todo={value}
+            index={index}
+            checked={checked}
+            onToggle={handleToggle}
+          />
         );
       })}
     </List>

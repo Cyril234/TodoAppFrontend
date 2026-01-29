@@ -28,7 +28,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function AddTodoDialog(props) {
+export default function AddTodoDialog({onClose}) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const [note, setNote] = React.useState('');
@@ -40,17 +40,17 @@ export default function AddTodoDialog(props) {
   };
   const handleClose = () => {
     setOpen(false);
-    props.onClose(
+    onClose(
         {
-                            title: title,
-                              note: note,
-                              checked: false,
-                              tags: {
-                                priority: priority,
-                                deadline: ['2026-01-28', '2026-01-28'] as [string, string],
-                              },
-                            }
-                        )
+        title: title,
+          note: note,
+          checked: false,
+          tags: {
+            priority: priority,
+            deadline: dateRange as [string, string],
+          },
+        }
+    );
   };
   const handlePriorityChange = (event: SelectChangeEvent) => {
     setPriority(event.target.value);
@@ -125,7 +125,7 @@ export default function AddTodoDialog(props) {
                     </Select>
                   </FormControl>
 
-                  <DateRangePicker/>
+                  <DateRangePicker onChange={(event) => setDateRange(event)}/>
             </Box>
 
         </DialogContent>

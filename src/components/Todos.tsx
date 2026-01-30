@@ -13,6 +13,8 @@ import HorizontalRuleRoundedIcon from '@mui/icons-material/HorizontalRuleRounded
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 
+import { useSearchParams } from "react-router-dom";
+
 import AddTodoDialog from "./AddTodoDialog"
 import TodoListItem from "./TodoListItem"
 
@@ -28,6 +30,7 @@ type Todo = {
 };
 
 export default function Todos(){
+    const [searchParams] = useSearchParams();
     const [checked, setChecked] = React.useState<number[]>([0]);
     const [todoList, setTodoList] = React.useState<
       Array<{
@@ -141,7 +144,7 @@ export default function Todos(){
   return (
       <div>
       <AddTodoDialog onClose={onClose}/>
-      <h1>Heute</h1>
+      <h1>{searchParams.get("tab")}</h1>
 
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {todoList.map((value, index) => {

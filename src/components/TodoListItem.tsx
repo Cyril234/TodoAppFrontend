@@ -51,12 +51,15 @@ function TodoListItem({ todo, index, checked, onToggle }: TodoListItemProps) {
         return <HorizontalRuleRoundedIcon />;
       case 'low':
         return <KeyboardArrowDownRoundedIcon />;
-      default:
+      case 'very low':
         return <KeyboardDoubleArrowDownRoundedIcon />;
     }
   };
 
   const renderDeadlineIcon = (deadline: [string, string]) => {
+    if(!deadline) {
+      return null;
+    }
     if (deadline[0] === deadline[1]) {
       return (
         <div>

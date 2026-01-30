@@ -9,6 +9,11 @@ import AccountMenu from "./AccountMenu.tsx";
 
 import {useNavigate} from "react-router-dom";
 
+type TodoList = {
+    name: string;
+    id: string;
+};
+
 function DrawerLeft() {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
     const navigate = useNavigate();
@@ -20,10 +25,10 @@ function DrawerLeft() {
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         index: number,
-        text: string
+        todolist: TodoList,
     ) => {
         setSelectedIndex(index);
-        navigate("/?tab=" + formatForUrl(text));
+        navigate("/?tab=" + formatForUrl(todolist.name)+"&id=" + todolist.id);
     };
 
     return (
@@ -32,20 +37,20 @@ function DrawerLeft() {
             <Divider/>
 
             <List>
-                {['Today', 'This Weak', 'Important', 'All'].map((text, index) => (
+                {[{name: 'Today', id: "0"}, {name: 'This Weak', id: "1"}, {name: 'Important', id: "2"}, {name: 'All', id: "3"}].map((todolist, index) => (
                     <ListItemButton
                         selected={selectedIndex === index}
-                        onClick={(event) => handleListItemClick(event, index, text)}
+                        onClick={(event) => handleListItemClick(event, index, todolist)}
                     >
                         <ListItemIcon>
                             <InboxIcon/>
                         </ListItemIcon>
-                        <ListItemText primary={text}/>
+                        <ListItemText primary={todolist.name}/>
                     </ListItemButton>
                 ))}
             </List>
             <Divider/>
-            <List>
+{/*            <List>
                 {['All mail', 'Trash', 'Spam'].map((text, index) => (
                     <ListItemButton
                         selected={selectedIndex === index + 4}
@@ -57,7 +62,7 @@ function DrawerLeft() {
                         <ListItemText primary={text}/>
                     </ListItemButton>
                 ))}
-            </List>
+            </List>*/}
         </div>
     )
 }

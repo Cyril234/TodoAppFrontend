@@ -91,7 +91,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
       localStorage.setItem("userId", response.id);
 
-      navigate("/?tab=Today");
+      navigate("/?tab=Today&id=0");
     } catch (error) {
       console.error(error);
     }

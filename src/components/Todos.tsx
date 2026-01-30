@@ -8,6 +8,7 @@ import TodoListItem from "./TodoListItem"
 
 
 type Todo = {
+    _id: string;
     userId?: string;
     todoListId?: string;
     title: string;
@@ -23,7 +24,6 @@ export default function Todos() {
     const [searchParams] = useSearchParams();
     const tab = searchParams.get("tab");
     const todoListId = searchParams.get("id");
-    const [checked, setChecked] = React.useState<number[]>([0]);
     const [todoList, setTodoList] = React.useState<
         Array<{
             title: string;
@@ -32,20 +32,6 @@ export default function Todos() {
             tags: { priority: string; deadline: [string, string] };
         }>
     >([]);
-
-
-    const handleToggle = (value: number) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
-    };
 
     async function addTodo(todo: Todo) {
         try {
@@ -67,10 +53,40 @@ export default function Todos() {
         }
     }
 
-    const onClose = (todo: Todo) => {
-        setTodoList([...todoList, todo]);
-        addTodo(todo);
-    };
+    async function checkTodo(_id: string) {
+
+        let updatedTodoList = [...todoList];
+
+        for (let i = 0; i < updatedTodoList.length; i++) {
+            const t = updatedTodoList[i];
+
+            if (t._id === _id) {
+                updatedTodoList[i] = { ...t, checked: !t.checked };
+                break;
+            }
+        }
+
+        setTodoList(updatedTodoList);
+
+        try {
+            const res = await fetch("http://localhost:3000/checkTodo", {
+                method: "Post",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    todoId: _id
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error("Post fehlgeschlagen");
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     async function getTodos() {
 
@@ -94,6 +110,11 @@ export default function Todos() {
         }
     }
 
+    const onClose = (todo: Todo) => {
+        setTodoList([...todoList, todo]);
+        addTodo(todo);
+    };
+
     React.useEffect(() => {
         getTodos();
     }, [tab, todoListId]);
@@ -111,8 +132,7 @@ export default function Todos() {
                             key={key}
                             todo={value}
                             index={index}
-                            checked={checked}
-                            onToggle={handleToggle}
+                            checkTodo={checkTodo}
                         />
                     );
                 })}

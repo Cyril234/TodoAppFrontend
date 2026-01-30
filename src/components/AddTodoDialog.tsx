@@ -27,12 +27,12 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
     },
 }));
 
-export default function AddTodoDialog({onClose}) {
+export default function AddTodoDialog({onClose}:any) {
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState('');
     const [note, setNote] = React.useState('');
     const [priority, setPriority] = React.useState('');
-    const [dateRange, setDateRange] = React.useState([]);
+    const [dateRange, setDateRange] = React.useState(["", ""]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -49,11 +49,22 @@ export default function AddTodoDialog({onClose}) {
                 checked: false,
                 tags: {
                     priority: priority,
-                    deadline: dateRange as [string, string],
+                    deadline: dateRange,
                 },
             }
         );
     };
+
+    const toYMD = (d: Date): string => {
+        const pad = (n: number) => String(n).padStart(2, "0");
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    };
+
+    const dateHandler = (range: [Date, Date]) => {
+        setDateRange([toYMD(range[0]), toYMD(range[1])]);
+    }
+
+
     const handlePriorityChange = (event: SelectChangeEvent) => {
         setPriority(event.target.value);
     };
@@ -87,7 +98,7 @@ export default function AddTodoDialog({onClose}) {
                 </IconButton>
                 <DialogContent dividers>
                     <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                        <div fullWidth>
+                        <div>
                             <TextField
                                 fullWidth
                                 id="standard-basic"
@@ -127,7 +138,7 @@ export default function AddTodoDialog({onClose}) {
                             </Select>
                         </FormControl>
 
-                        <DateRangePicker onChange={(event) => setDateRange(event)}/>
+                        <DateRangePicker onChange={(range) => dateHandler(range)}/>
                     </Box>
 
                 </DialogContent>

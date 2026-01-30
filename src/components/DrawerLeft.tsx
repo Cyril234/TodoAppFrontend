@@ -23,7 +23,6 @@ function DrawerLeft() {
     }
 
     const handleListItemClick = (
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         index: number,
         todolist: TodoList,
     ) => {
@@ -40,7 +39,7 @@ function DrawerLeft() {
                 {[{name: 'Today', id: "0"}, {name: 'This Weak', id: "1"}, {name: 'Important', id: "2"}, {name: 'All', id: "3"}].map((todolist, index) => (
                     <ListItemButton
                         selected={selectedIndex === index}
-                        onClick={(event) => handleListItemClick(event, index, todolist)}
+                        onClick={() => handleListItemClick(index, todolist)}
                     >
                         <ListItemIcon>
                             <InboxIcon/>

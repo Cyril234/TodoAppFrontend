@@ -14,6 +14,9 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TodoInformation from "./TodoInformation"
 
 type Todo = {
+  _id: string;
+  userId?: string;
+  todoListId?: string;
   title: string;
   note: string;
   checked: boolean;
@@ -24,13 +27,13 @@ type Todo = {
 };
 
 type TodoListItemProps = {
+  key: string
   todo: Todo;
   index: number;
-  checked: number[];
-  onToggle: (value: number) => () => void;
+  checkTodo: (_id: string ) => void;
 };
 
-function TodoListItem({ todo, index, checked, onToggle }: TodoListItemProps) {
+function TodoListItem({key, todo, index, checkTodo }: TodoListItemProps) {
   const [infoOpen, setInfoOpen] = React.useState(false);
 
   const handleOpenInfo = () => {
@@ -57,7 +60,7 @@ function TodoListItem({ todo, index, checked, onToggle }: TodoListItemProps) {
   };
 
   const renderDeadlineIcon = (deadline: [string, string]) => {
-    if(!deadline) {
+    if(!deadline || deadline.length !== 2 || (!deadline[0] && !deadline[1])) {
       return null;
     }
     if (deadline[0] === deadline[1]) {
@@ -85,16 +88,16 @@ function TodoListItem({ todo, index, checked, onToggle }: TodoListItemProps) {
         <ListItemIcon>
           <Checkbox
             edge="start"
-            checked={checked.includes(index)}
+            checked={todo.checked}
             tabIndex={-1}
             disableRipple
             inputProps={{ 'aria-labelledby': labelId }}
             onClick={(event) => event.stopPropagation()}
-            onChange={onToggle(index)}
+            onChange={() => {checkTodo(todo._id)}}
           />
         </ListItemIcon>
         <ListItemText id={labelId} primary={todo.title} />
-        <div edge="end">
+        <div>
             {renderPriorityIcon(todo.tags.priority)}
             {renderDeadlineIcon(todo.tags.deadline)}
         </div>

@@ -11,6 +11,8 @@ import {useNavigate} from "react-router-dom";
 
 export default function AccountMenu() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [userName, setUserName] = React.useState<string>("");
+
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
 
@@ -26,6 +28,34 @@ export default function AccountMenu() {
         setAnchorEl(null);
         navigate("/singIn");
     };
+
+
+    async function getUser() {
+        try {
+            const res = await fetch("http://localhost:3000/user?userId=" + localStorage.getItem("userId"), {
+                method: "Get",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error("Get fehlgeschlagen");
+            }
+
+            const response = await res.json();
+            console.log(response)
+            setUserName(response.user.username);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    React.useEffect(() => {
+        getUser();
+    }, []);
+
+
     return (
         <React.Fragment>
             <Box sx={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
@@ -37,9 +67,9 @@ export default function AccountMenu() {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                 >
-                    <Avatar sx={{width: 32, height: 32}}>C</Avatar>
+                    <Avatar sx={{width: 32, height: 32}}>{userName.at(0)?.toUpperCase()}</Avatar>
                 </IconButton>
-                Cyril
+                {userName}
             </Box>
             <Menu
                 anchorEl={anchorEl}

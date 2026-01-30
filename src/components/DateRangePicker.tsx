@@ -2,19 +2,28 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/flatpickr.css";
 import { German } from "flatpickr/dist/l10n/de";
 
-export default function DateRangePicker() {
+const formatDate = (date: Date) => date.toLocaleDateString("de-DE");
+
+type DateRangePickerProps = {
+  onChange?: (range: [Date, Date]) => void;
+};
+
+export default function DateRangePicker({ onChange }: DateRangePickerProps) {
   return (
     <Flatpickr
-      placeholder="Zeitraum auswählen"
+      placeholder="Zeitraum auswÃ¤hlen"
       options={{
         mode: "range",
-        dateFormat: "Y-m-d",
+        dateFormat: "Y-m-d", // intern (z. B. 2026-01-28)
         locale: German,
       }}
       onChange={(selectedDates) => {
-        const [start, end] = selectedDates;
-        console.log("Start:", start);
-        console.log("Ende:", end);
+        const [start, end] = selectedDates as [Date, Date];
+
+        if (end && onChange) {
+          onChange([start, end]);
+          console.log([formatDate(start), formatDate(end)]);
+        }
       }}
     />
   );

@@ -16,6 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Todos from './Todos.tsx'
+import DrawerLeft from './DrawerLeft.tsx'
 
 const drawerWidth = 240;
 
@@ -47,36 +48,6 @@ export default function MainScreen(props: Props) {
     }
   };
 
-  const drawer = (
-    <div>
-      <List>
-        {['Today', 'This Weak', 'Important', 'All'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -93,7 +64,7 @@ export default function MainScreen(props: Props) {
           }}
           open
         >
-          {drawer}
+          <DrawerLeft/>
         </Drawer>
       </Box>
       <Box

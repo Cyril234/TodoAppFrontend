@@ -1,5 +1,5 @@
 import './App.css'
-import MainScreen from "./components/mainScreen"
+import MainScreen from "./components/MainScreen"
 import SignIn from "./components/SignIn"
 import SignUp from "./components/SignUp"
 import { Routes, Route } from 'react-router-dom';

@@ -55,18 +55,15 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props: { disableCustomTheme?: boolean }) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!validateInputs() || emailError || passwordError) {
+    if (!validateInputs() || passwordError) {
       return;
     }
     const data = new FormData(event.currentTarget);
@@ -141,8 +138,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
                 id="email"
                 type="email"
                 name="email"
@@ -152,7 +147,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? 'error' : 'primary'}
               />
             </FormControl>
             <FormControl>
@@ -185,7 +179,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="/signUp"
+                href="/singUp"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >

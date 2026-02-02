@@ -6,17 +6,22 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccountMenu from "./AccountMenu.tsx";
+import TodoListMenu from "./TodoListMenu.tsx";
 
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import AddTodoListDialog from "./AddTodoListDialog.tsx";
+import {useEffect} from "react";
 
 type TodoList = {
     name: string;
-    id: string;
+    _id: string;
 };
 
 function DrawerLeft() {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const [todoLists, setTodoLists] = React.useState<TodoList[]>([]);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const formatForUrl = (text: string) => {
         return text.replace(" ", "-");
@@ -27,8 +32,102 @@ function DrawerLeft() {
         todolist: TodoList,
     ) => {
         setSelectedIndex(index);
-        navigate("/?tab=" + formatForUrl(todolist.name)+"&id=" + todolist.id);
+        navigate("/?tab=" + formatForUrl(todolist.name)+"&id=" + todolist._id);
     };
+
+    async function getTodoList() {
+        try {
+            const res = await fetch("http://localhost:3000/todoLists?userId=" + localStorage.getItem("userId"), {
+                method: "Get",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error("Post fehlgeschlagen");
+            }
+
+            const data = await res.json();
+            console.log("XXXXXXXXXXXXXXXXXXXXX")
+            console.log(data)
+
+            setTodoLists(data.todoLists ?? []);
+            console.log(todoLists)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getTodoList()
+        console.log(todoLists)
+    }, []);
+
+    async function addTodoList(name: string) {
+        try {
+            const res = await fetch("http://localhost:3000/addTodolist", {
+                method: "Post",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: name,
+                    userId: localStorage.getItem("userId"),
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error("Post fehlgeschlagen");
+            }
+
+            const data = await res.json();
+            setTodoLists([...todoLists, {name: name, _id: data.id}]);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function deleteTodoList(deleteWithTodos: boolean) {
+        try {
+            console.log("XYZ")
+
+            if(searchParams.get("tab") === "tasks"){
+                alert("Cannot delete default todo lists");
+                return;
+            }
+
+            const res = await fetch("http://localhost:3000/todoList", {
+                method: "Delete",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    deleteTodos: deleteWithTodos,
+                    todoListId: searchParams.get("id"),
+                    userId: localStorage.getItem("userId"),
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error(res.error);
+            }
+
+            setTodoLists(todoLists.filter((t) => {
+                if(t._id === searchParams.get("id")) {
+                    return false;
+                }
+                return true;
+            }));
+
+            navigate("/?tab=Today&id=1");
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
     return (
         <div>
@@ -36,10 +135,11 @@ function DrawerLeft() {
             <Divider/>
 
             <List>
-                {[{name: 'Today', id: "0"}, {name: 'This Weak', id: "1"}, {name: 'Important', id: "2"}, {name: 'All', id: "3"}].map((todolist, index) => (
+                {[{name: 'Today', _id: "0"}, {name: 'This Weak', _id: "1"}, {name: 'Important', _id: "2"}, {name: 'All', _id: "3"}].map((todolist, index) => (
                     <ListItemButton
                         selected={selectedIndex === index}
                         onClick={() => handleListItemClick(index, todolist)}
+                        key={todolist._id}
                     >
                         <ListItemIcon>
                             <InboxIcon/>
@@ -49,19 +149,21 @@ function DrawerLeft() {
                 ))}
             </List>
             <Divider/>
-{/*            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <List>
+                {todoLists.map((todoList, index) => (
                     <ListItemButton
                         selected={selectedIndex === index + 4}
-                        onClick={(event) => handleListItemClick(event, index + 4, text)}
+                        onClick={() => handleListItemClick(index + 4, todoList)}
+                        key={todoList._id}
                     >
                         <ListItemIcon>
-                            <InboxIcon/>
+                            <TodoListMenu deleteTodoList={deleteTodoList} />
                         </ListItemIcon>
-                        <ListItemText primary={text}/>
+                        <ListItemText primary={todoList.name}/>
                     </ListItemButton>
                 ))}
-            </List>*/}
+            </List>
+            <AddTodoListDialog onClose={addTodoList}/>
         </div>
     )
 }

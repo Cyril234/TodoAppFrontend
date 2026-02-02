@@ -115,6 +115,75 @@ export default function Todos() {
         addTodo(todo);
     };
 
+    async function updateTodo(todo: Todo, title:string, note: string, priority: string, deadline: [string, string]) {
+
+        try {
+            todo.title = title;
+            todo.note = note;
+            todo.tags.priority = priority;
+            todo.tags.deadline = deadline;
+
+            console.log(todo)
+
+            const res = await fetch("http://localhost:3000/todo", {
+                method: "Put",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    todo
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error("Get fehlgeschlagen");
+            }
+
+            const response = await res.json();
+            console.log(response)
+
+            setTodoList(todoList.map((t) => {
+                if(t._id === todo._id) {
+                    return todo;
+                }
+                return t;
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function deleteTodo(todo: Todo) {
+
+        try {
+            const res = await fetch("http://localhost:3000/todo", {
+                method: "Delete",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    todo
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error(res.error);
+            }
+
+            const response = await res.json();
+            console.log(response)
+
+            setTodoList(todoList.filter((t) => {
+                if(t._id === todo._id) {
+                    return false;
+                }
+                return true;
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     React.useEffect(() => {
         getTodos();
     }, [tab, todoListId]);
@@ -133,6 +202,8 @@ export default function Todos() {
                             todo={value}
                             index={index}
                             checkTodo={checkTodo}
+                            updateTodo={updateTodo}
+                            deleteTodo={deleteTodo}
                         />
                     );
                 })}

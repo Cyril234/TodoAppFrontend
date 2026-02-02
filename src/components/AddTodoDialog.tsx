@@ -16,6 +16,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {type SelectChangeEvent} from '@mui/material/Select';
 import DateRangePicker from "./DateRangePicker.tsx"
+import {useSearchParams} from "react-router-dom";
+import {useEffect} from "react";
+
 
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
@@ -28,31 +31,56 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
 }));
 
 export default function AddTodoDialog({onClose}:any) {
+    const [searchParams] = useSearchParams();
+
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState('');
     const [note, setNote] = React.useState('');
     const [priority, setPriority] = React.useState('');
     const [dateRange, setDateRange] = React.useState(["", ""]);
 
+    useEffect(() => {
+        setTitle("");
+        setNote("");
+        setPriority("");
+        setDateRange(["", ""]);
+    }, [open]);
+
     const handleClickOpen = () => {
         setOpen(true);
     };
 
-    //Todo: todoListID
     const handleClose = () => {
+        if (searchParams.get("id").length <=4){
+            onClose(
+                {
+                    userId: localStorage.getItem("userId"),
+                    title: title,
+                    note: note,
+                    checked: false,
+                    tags: {
+                        priority: priority,
+                        deadline: dateRange,
+                    },
+                }
+            );
+        }else {
+            onClose(
+                {
+                    userId: localStorage.getItem("userId"),
+                    todoListId: searchParams.get("id") || undefined,
+                    title: title,
+                    note: note,
+                    checked: false,
+                    tags: {
+                        priority: priority,
+                        deadline: dateRange,
+                    },
+                }
+            );
+        }
         setOpen(false);
-        onClose(
-            {
-                userId: localStorage.getItem("userId"),
-                title: title,
-                note: note,
-                checked: false,
-                tags: {
-                    priority: priority,
-                    deadline: dateRange,
-                },
-            }
-        );
+
     };
 
     const toYMD = (d: Date): string => {
@@ -75,7 +103,7 @@ export default function AddTodoDialog({onClose}:any) {
                 <AddIcon/>
             </Fab>
             <BootstrapDialog
-                onClose={handleClose}
+                onClose={() => setOpen(false)}
                 aria-labelledby="customized-dialog-title"
                 open={open}
                 fullWidth
@@ -86,7 +114,7 @@ export default function AddTodoDialog({onClose}:any) {
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={() => setOpen(false)}
                     sx={(theme) => ({
                         position: 'absolute',
                         right: 8,

@@ -31,9 +31,11 @@ type TodoListItemProps = {
   todo: Todo;
   index: number;
   checkTodo: (_id: string ) => void;
+  updateTodo: (updatedTodo: Todo, title:string, note: string, priority: string, deadline: [string, string]) => void;
+  deleteTodo: (updatedTodo: Todo) => void;
 };
 
-function TodoListItem({key, todo, index, checkTodo }: TodoListItemProps) {
+function TodoListItem({key, todo, index, checkTodo, updateTodo, deleteTodo }: TodoListItemProps) {
   const [infoOpen, setInfoOpen] = React.useState(false);
 
   const handleOpenInfo = () => {
@@ -107,6 +109,8 @@ function TodoListItem({key, todo, index, checkTodo }: TodoListItemProps) {
         open={infoOpen}
         onClose={handleCloseInfo}
         onOpen={handleOpenInfo}
+        updateTodo={updateTodo}
+        deleteTodo={deleteTodo}
       />
     </ListItem>
   );

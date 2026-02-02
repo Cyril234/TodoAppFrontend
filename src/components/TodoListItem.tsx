@@ -11,109 +11,110 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
+
 import TodoInformation from "./TodoInformation"
+import {Chip} from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 type Todo = {
-  _id: string;
-  userId?: string;
-  todoListId?: string;
-  title: string;
-  note: string;
-  checked: boolean;
-  tags: {
-    priority: 'very low' | 'low' | 'medium' | 'high' | 'very high';
-    deadline: [string, string];
-  };
+    _id: string;
+    userId?: string;
+    todoListId?: string;
+    title: string;
+    note: string;
+    checked: boolean;
+    tags: {
+        priority: 'very low' | 'low' | 'medium' | 'high' | 'very high';
+        deadline: [string, string];
+    };
 };
 
 type TodoListItemProps = {
-  key: string
-  todo: Todo;
-  index: number;
-  checkTodo: (_id: string ) => void;
-  updateTodo: (updatedTodo: Todo, title:string, note: string, priority: string, deadline: [string, string]) => void;
-  deleteTodo: (updatedTodo: Todo) => void;
+    key: string
+    todo: Todo;
+    index: number;
+    checkTodo: (_id: string) => void;
+    updateTodo: (updatedTodo: Todo, title: string, note: string, priority: string, deadline: [string, string]) => void;
+    deleteTodo: (updatedTodo: Todo) => void;
 };
 
-function TodoListItem({key, todo, index, checkTodo, updateTodo, deleteTodo }: TodoListItemProps) {
-  const [infoOpen, setInfoOpen] = React.useState(false);
+function TodoListItem({key, todo, index, checkTodo, updateTodo, deleteTodo}: TodoListItemProps) {
+    const [infoOpen, setInfoOpen] = React.useState(false);
 
-  const handleOpenInfo = () => {
-    setInfoOpen(true);
-  };
+    const handleOpenInfo = () => {
+        setInfoOpen(true);
+    };
 
-  const handleCloseInfo = () => {
-    setInfoOpen(false);
-  };
+    const handleCloseInfo = () => {
+        setInfoOpen(false);
+    };
 
-  const renderPriorityIcon = (priority: string) => {
-    switch (priority) {
-      case 'very high':
-        return <KeyboardDoubleArrowUpRoundedIcon />;
-      case 'high':
-        return <KeyboardArrowUpRoundedIcon />;
-      case 'medium':
-        return <HorizontalRuleRoundedIcon />;
-      case 'low':
-        return <KeyboardArrowDownRoundedIcon />;
-      case 'very low':
-        return <KeyboardDoubleArrowDownRoundedIcon />;
-    }
-  };
+    const renderPriorityIcon = (priority: string) => {
+        switch (priority) {
+            case 'very high':
+                return <Chip icon={<KeyboardDoubleArrowUpRoundedIcon/>} label="very high" variant="outlined"/>
+            case 'high':
+                return <Chip icon={<KeyboardArrowUpRoundedIcon/>} label="high" variant="outlined"/>
+            case 'medium':
+                return <Chip icon={<HorizontalRuleRoundedIcon/>} label="medium" variant="outlined"/>
+            case 'low':
+                return <Chip icon={<KeyboardArrowDownRoundedIcon/>} label="low" variant="outlined"/>
+            case 'very low':
+                return <Chip icon={<KeyboardDoubleArrowDownRoundedIcon/>} label="very low" variant="outlined"/>
+        }
+    };
 
-  const renderDeadlineIcon = (deadline: [string, string]) => {
-    if(!deadline || deadline.length !== 2 || (!deadline[0] && !deadline[1])) {
-      return null;
-    }
-    if (deadline[0] === deadline[1]) {
-      return (
-        <div>
-          <CalendarMonthIcon />
-          {deadline[0]}
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <CalendarMonthIcon />
-          {deadline[0]} - {deadline[1]}
-        </div>
-      );
-    }
-  };
+    const renderDeadlineIcon = (deadline: [string, string]) => {
+        if (!deadline || deadline.length !== 2 || (!deadline[0] && !deadline[1])) {
+            return null;
+        }
+        if (deadline[0] === deadline[1]) {
+            return (
+                <Chip icon={<CalendarMonthIcon/>} label={deadline[0]} variant="outlined"/>
+            );
+        } else {
+            return (
+                <Chip icon={<CalendarMonthIcon/>} label={deadline[0] + " - " + deadline[1]} variant="outlined"/>
+            );
+        }
+    };
 
-  const labelId = `todo-checkbox-${index}`;
+    const labelId = `todo-checkbox-${index}`;
 //onClick={() => setInfoOpen(false)}
-  return (
-    <ListItem disablePadding>
-      <ListItemButton role={undefined} dense onClick={handleOpenInfo}>
-        <ListItemIcon>
-          <Checkbox
-            edge="start"
-            checked={todo.checked}
-            tabIndex={-1}
-            disableRipple
-            inputProps={{ 'aria-labelledby': labelId }}
-            onClick={(event) => event.stopPropagation()}
-            onChange={() => {checkTodo(todo._id)}}
-          />
-        </ListItemIcon>
-        <ListItemText id={labelId} primary={todo.title} />
-        <div>
-            {renderPriorityIcon(todo.tags.priority)}
-            {renderDeadlineIcon(todo.tags.deadline)}
-        </div>
-      </ListItemButton>
-      <TodoInformation
-        todo={todo}
-        open={infoOpen}
-        onClose={handleCloseInfo}
-        onOpen={handleOpenInfo}
-        updateTodo={updateTodo}
-        deleteTodo={deleteTodo}
-      />
-    </ListItem>
-  );
+    return (
+        <ListItem disablePadding>
+            <ListItemButton role={undefined} dense onClick={handleOpenInfo}>
+                <ListItemIcon>
+                    <Checkbox
+                        edge="start"
+                        checked={todo.checked}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{'aria-labelledby': labelId}}
+                        onClick={(event) => event.stopPropagation()}
+                        onChange={() => {
+                            checkTodo(todo._id)
+                        }}
+                    />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={todo.title}/>
+
+                <Stack direction="row" spacing={1}>
+                    {renderPriorityIcon(todo.tags.priority)}
+                    {renderDeadlineIcon(todo.tags.deadline)}
+                </Stack>
+
+            </ListItemButton>
+            <TodoInformation
+                todo={todo}
+                open={infoOpen}
+                onClose={handleCloseInfo}
+                onOpen={handleOpenInfo}
+                updateTodo={updateTodo}
+                deleteTodo={deleteTodo}
+            />
+        </ListItem>
+    );
 }
 
 export default TodoListItem;

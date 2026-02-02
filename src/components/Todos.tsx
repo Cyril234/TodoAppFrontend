@@ -190,8 +190,10 @@ export default function Todos() {
 
     return (
         <div>
-            <AddTodoDialog onClose={onClose}/>
-            <h1>{tab}</h1>
+            <div>
+                <h1>{tab}</h1>
+                <AddTodoDialog onClose={onClose}/>
+            </div>
 
             <List sx={{width: '100%', bgcolor: 'background.paper'}}>
                 {todoList.map((value, index) => {

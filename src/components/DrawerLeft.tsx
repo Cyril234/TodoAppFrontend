@@ -1,12 +1,15 @@
 import * as React from 'react';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccountMenu from "./AccountMenu.tsx";
 import TodoListMenu from "./TodoListMenu.tsx";
+import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
+import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
+import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
+import FilterNoneOutlinedIcon from '@mui/icons-material/FilterNoneOutlined';
 
 import {useNavigate, useSearchParams} from "react-router-dom";
 import AddTodoListDialog from "./AddTodoListDialog.tsx";
@@ -111,7 +114,7 @@ function DrawerLeft() {
             });
 
             if (!res.ok) {
-                throw new Error(res.error);
+                throw new Error(res.statusText);
             }
 
             setTodoLists(todoLists.filter((t) => {
@@ -135,18 +138,19 @@ function DrawerLeft() {
             <Divider/>
 
             <List>
-                {[{name: 'Today', _id: "0"}, {name: 'This Weak', _id: "1"}, {name: 'Important', _id: "2"}, {name: 'All', _id: "3"}].map((todolist, index) => (
+                {[{name: 'Today', _id: "0", icon: <TodayOutlinedIcon/>}, {name: 'This Weak', _id: "1", icon: <DateRangeOutlinedIcon/>}, {name: 'Important', _id: "2", icon: <ReportGmailerrorredOutlinedIcon/>}, {name: 'All', _id: "3", icon: <FilterNoneOutlinedIcon/>}].map((todolist, index) => (
                     <ListItemButton
                         selected={selectedIndex === index}
                         onClick={() => handleListItemClick(index, todolist)}
                         key={todolist._id}
                     >
                         <ListItemIcon>
-                            <InboxIcon/>
+                            {todolist.icon}
                         </ListItemIcon>
                         <ListItemText primary={todolist.name}/>
                     </ListItemButton>
                 ))}
+
             </List>
             <Divider/>
             <List>

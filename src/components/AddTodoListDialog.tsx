@@ -11,6 +11,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import {useEffect} from "react";
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialogContent-root': {
@@ -25,6 +26,10 @@ export default function AddTodoDialog({onClose}: any) {
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState('');
 
+    useEffect(() => {
+        setName("");
+    }, [open]);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -37,11 +42,12 @@ export default function AddTodoDialog({onClose}: any) {
 
     return (
         <React.Fragment>
-            <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
-                <AddIcon/>
-            </Fab>
+            <div onClick={handleClickOpen}>
+                <AddIcon/> Add Todolist
+            </div>
+
             <BootstrapDialog
-                onClose={handleClose}
+                onClose={() => setOpen(false)}
                 aria-labelledby="customized-dialog-title"
                 open={open}
                 fullWidth
@@ -52,7 +58,7 @@ export default function AddTodoDialog({onClose}: any) {
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={() => setOpen(false)}
                     sx={(theme) => ({
                         position: 'absolute',
                         right: 8,

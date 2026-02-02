@@ -4,8 +4,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
-import Logout from '@mui/icons-material/Logout';
-import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
+import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 
 type TodoListMenuProps = {
     deleteTodoList: (withTodos: boolean) => void;
@@ -35,7 +36,7 @@ export default function TodoListMenu({ deleteTodoList }: TodoListMenuProps) {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <ListAltRoundedIcon sx={{ mr: 2 }}/>
+                        <DehazeOutlinedIcon sx={{ mr: 2 }}/>
                     </IconButton>
             </Box>
             <Menu
@@ -76,13 +77,13 @@ export default function TodoListMenu({ deleteTodoList }: TodoListMenuProps) {
             >
                 <MenuItem onClick={() => handleDelete(true)}>
                     <ListItemIcon>
-                        <Logout fontSize="small" />
+                        <DeleteForeverOutlinedIcon fontSize="small" />
                     </ListItemIcon>
                     delete with todos
                 </MenuItem>
                 <MenuItem onClick={() => handleDelete(false)}>
                     <ListItemIcon>
-                        <Logout fontSize="small" />
+                        <DeleteOutlineOutlinedIcon fontSize="small" />
                     </ListItemIcon>
                     delete without todos
                 </MenuItem>

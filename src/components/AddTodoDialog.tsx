@@ -20,7 +20,6 @@ import {useSearchParams} from "react-router-dom";
 import {useEffect} from "react";
 
 
-
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -30,7 +29,7 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
     },
 }));
 
-export default function AddTodoDialog({onClose}:any) {
+export default function AddTodoDialog({onClose}: any) {
     const [searchParams] = useSearchParams();
 
     const [open, setOpen] = React.useState(false);
@@ -51,7 +50,7 @@ export default function AddTodoDialog({onClose}:any) {
     };
 
     const handleClose = () => {
-        if (searchParams.get("id").length <=4){
+        if (searchParams.get("id").length <= 4) {
             onClose(
                 {
                     userId: localStorage.getItem("userId"),
@@ -64,7 +63,7 @@ export default function AddTodoDialog({onClose}:any) {
                     },
                 }
             );
-        }else {
+        } else {
             onClose(
                 {
                     userId: localStorage.getItem("userId"),
@@ -99,7 +98,8 @@ export default function AddTodoDialog({onClose}:any) {
 
     return (
         <React.Fragment>
-            <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
+            <Fab color="primary" aria-label="add" onClick={handleClickOpen}
+                 sx={{position: 'fixed', bottom: 16, right: 16}}>
                 <AddIcon/>
             </Fab>
             <BootstrapDialog
@@ -126,7 +126,8 @@ export default function AddTodoDialog({onClose}:any) {
                 </IconButton>
                 <DialogContent dividers>
                     <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                        <div>
+                        <FormControl variant="standard" fullWidth={true} margin={"normal"}>
+
                             <TextField
                                 fullWidth
                                 id="standard-basic"
@@ -134,39 +135,43 @@ export default function AddTodoDialog({onClose}:any) {
                                 variant="standard"
                                 value={title}
                                 onChange={(event) => setTitle(event.target.value)}
+                                sx={{marginBottom: 2}}
                             />
-                        </div>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            label="Note"
-                            multiline
-                            fullWidth
-                            maxRows={4}
-                            variant="standard"
-                            value={note}
-                            onChange={(event) => setNote(event.target.value)}
-                        />
-                        <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
-                            <InputLabel id="demo-simple-select-standard-label">priority</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
-                                value={priority}
-                                onChange={handlePriorityChange}
-                                label="priority"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={"very high"}>very high</MenuItem>
-                                <MenuItem value={"high"}>high</MenuItem>
-                                <MenuItem value={"medium"}>medium</MenuItem>
-                                <MenuItem value={"low"}>low</MenuItem>
-                                <MenuItem value={"very low"}>very low</MenuItem>
-                            </Select>
+
+                            <TextField
+                                id="standard-multiline-flexible"
+                                label="Note"
+                                multiline
+                                fullWidth
+                                maxRows={4}
+                                variant="standard"
+                                value={note}
+                                onChange={(event) => setNote(event.target.value)}
+                                sx={{marginBottom: 2}}
+                            />
+                            <FormControl variant="standard" sx={{marginBottom: 2}}>
+                                <InputLabel id="demo-simple-select-standard-label">priority</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={priority}
+                                    onChange={handlePriorityChange}
+                                    label="priority"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={"very high"}>very high</MenuItem>
+                                    <MenuItem value={"high"}>high</MenuItem>
+                                    <MenuItem value={"medium"}>medium</MenuItem>
+                                    <MenuItem value={"low"}>low</MenuItem>
+                                    <MenuItem value={"very low"}>very low</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                            <DateRangePicker onChange={(range) => dateHandler(range)}/>
                         </FormControl>
 
-                        <DateRangePicker onChange={(range) => dateHandler(range)}/>
                     </Box>
 
                 </DialogContent>

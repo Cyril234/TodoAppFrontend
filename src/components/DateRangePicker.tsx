@@ -12,7 +12,7 @@ export default function DateRangePicker({ onChange, existingRange }: DateRangePi
 
     return (
         <Flatpickr
-            placeholder="Zeitraum auswählen"
+            placeholder="Select time period"
             options={{
                 mode: "range",
                 dateFormat: "Y-m-d", // intern (z. B. 2026-01-28)

@@ -6,20 +6,7 @@ import {useSearchParams} from "react-router-dom";
 import AddTodoDialog from "./AddTodoDialog"
 import TodoListItem from "./TodoListItem"
 
-type Todo = {
-    _id: string;
-    userId?: string;
-    todoListId?: string;
-    title: string;
-    note: string;
-    checked: boolean;
-    tags: {
-        priority: Priority;
-        deadline: [string, string];
-    };
-};
-
-type Priority = 'very low' | 'low' | 'medium' | 'high' | 'very high';
+import type {Todo, Priority} from "./shared/types/common.types.ts";
 
 export default function Todos() {
     const [searchParams] = useSearchParams();

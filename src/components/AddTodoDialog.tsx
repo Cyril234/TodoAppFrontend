@@ -100,7 +100,7 @@ export default function AddTodoDialog({onClose}: any) {
     return (
         <React.Fragment>
             <Fab color="primary" aria-label="add" onClick={handleClickOpen}
-                 sx={{position: 'fixed', bottom: 16, right: 16}}>
+                 sx={{position: 'fixed', top: 32, right: 32}}>
                 <AddIcon/>
             </Fab>
             <BootstrapDialog

@@ -14,19 +14,8 @@ import design from '../../design.json';
 import TodoInformation from "./TodoInformation"
 import {Chip} from "@mui/material";
 import Stack from "@mui/material/Stack";
+import type {Todo, Priority} from "./shared/types/common.types.ts";
 
-type Todo = {
-    _id: string;
-    userId?: string;
-    todoListId?: string;
-    title: string;
-    note: string;
-    checked: boolean;
-    tags: {
-        priority: Priority;
-        deadline: [string, string];
-    };
-};
 
 type TodoListItemProps = {
     key: string
@@ -36,9 +25,6 @@ type TodoListItemProps = {
     updateTodo: (updatedTodo: Todo, title: string, note: string, priority: Priority, deadline: [string, string]) => void;
     deleteTodo: (todo: Todo) => void;
 };
-
-type Priority = 'very low' | 'low' | 'medium' | 'high' | 'very high';
-
 
 function TodoListItem({todo, index, checkTodo, updateTodo, deleteTodo}: TodoListItemProps) {
     const [infoOpen, setInfoOpen] = React.useState(false);
@@ -54,15 +40,15 @@ function TodoListItem({todo, index, checkTodo, updateTodo, deleteTodo}: TodoList
     const renderPriorityIcon = (priority: string) => {
         switch (priority) {
             case 'very high':
-                return <Chip icon={<KeyboardDoubleArrowUpRoundedIcon/>} label="very high" variant="outlined"/>
+                return <Chip icon={<KeyboardDoubleArrowUpRoundedIcon/>} label="very high" variant="outlined" sx={{ '& .MuiChip-icon': { color: "#e0483d" }}}/>
             case 'high':
-                return <Chip icon={<KeyboardArrowUpRoundedIcon/>} label="high" variant="outlined"/>
+                return <Chip icon={<KeyboardArrowUpRoundedIcon/>} label="high" variant="outlined" sx={{ '& .MuiChip-icon': { color: "#e3736b" }}}/>
             case 'medium':
                 return <Chip icon={<HorizontalRuleRoundedIcon/>} label="medium" variant="outlined"/>
             case 'low':
-                return <Chip icon={<KeyboardArrowDownRoundedIcon/>} label="low" variant="outlined"/>
+                return <Chip icon={<KeyboardArrowDownRoundedIcon/>} label="low" variant="outlined" sx={{ '& .MuiChip-icon': { color: "#6fc0dd" }}}/>
             case 'very low':
-                return <Chip icon={<KeyboardDoubleArrowDownRoundedIcon/>} label="very low" variant="outlined"/>
+                return <Chip icon={<KeyboardDoubleArrowDownRoundedIcon/>} label="very low" variant="outlined" sx={{ '& .MuiChip-icon': { color: "#18a9dd" }}}/>
         }
     };
 
@@ -71,13 +57,25 @@ function TodoListItem({todo, index, checkTodo, updateTodo, deleteTodo}: TodoList
             return null;
         }
         if (deadline[0] === deadline[1]) {
-            return (
-                <Chip icon={<CalendarMonthIcon/>} label={deadline[0]} variant="outlined"/>
-            );
+            if(deadline[0] < new Date().toISOString().split('T')[0]) {
+                return (
+                    <Chip icon={<CalendarMonthIcon/>} label={deadline[0]} variant="outlined" sx={{ '& .MuiChip-icon': { color: "#e0483d" }}}/>
+                );
+            } else {
+                return (
+                    <Chip icon={<CalendarMonthIcon/>} label={deadline[0]} variant="outlined"/>
+                );
+            }
         } else {
-            return (
-                <Chip icon={<CalendarMonthIcon/>} label={deadline[0] + " - " + deadline[1]} variant="outlined"/>
-            );
+            if(deadline[0] < new Date().toISOString().split('T')[0]) {
+                return (
+                    <Chip icon={<CalendarMonthIcon/>} label={deadline[0] + " - " + deadline[1]} variant="outlined" sx={{ '& .MuiChip-icon': { color: "#e0483d" }}}/>
+                );
+            } else {
+                return (
+                    <Chip icon={<CalendarMonthIcon/>} label={deadline[0] + " - " + deadline[1]} variant="outlined"/>
+                );
+            }
         }
     };
 

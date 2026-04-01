@@ -3,24 +3,20 @@ import Box from "@mui/material/Box";
 import ChatInput from "./ChatInput.tsx";
 import ChatMessage from "./ChatMessages.tsx";
 import {useEffect} from "react";
-
-type chatMessage = {
-    role:string;
-    content:string;
-};
+import type {ChatMessageType} from "../shared/types/chat.types.ts";
 
 export default function Chat() {
     //let chat:chatMessage[] = [{ "role": "system", "content": "answer in english." }];
-    const [chat, setChat] = React.useState<chatMessage[]>([]);
+    const [chat, setChat] = React.useState<ChatMessageType[]>([]);
 
 
-    function submitInput(messange: chatMessage) {
+    function submitInput(messange: ChatMessageType) {
         const nextChat = [...chat, messange];
         setChat(nextChat);
         askChat(nextChat)
     }
 
-    async function askChat(currentChat: chatMessage[]) {
+    async function askChat(currentChat: ChatMessageType[]) {
 
         try {
             console.log("++++++++++++++++++++++++++++++++++++++++++")

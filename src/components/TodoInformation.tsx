@@ -10,33 +10,9 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-
+import type {Todo} from "./shared/types/common.types.ts";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
-
-/*type Todo = {
-    title: string;
-    note: string;
-    checked: boolean;
-    tags: {
-        priority: Priority;
-        deadline: [string, string];
-    };
-};*/
-
-type Todo = {
-    _id: string;
-    userId?: string;
-    todoListId?: string;
-    title: string;
-    note: string;
-    checked: boolean;
-    tags: {
-        priority: Priority;
-        deadline: [string, string];
-    };
-};
-
 
 type TodoInformationProps = {
     todo: Todo;

@@ -3,15 +3,7 @@ import {InputBase, Paper} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-
-type ChatInputProps = {
-    submitInput: (input: chatMessage) => void;
-};
-
-type chatMessage = {
-    role:string;
-    content:string;
-};
+import type {ChatInputProps} from "../shared/types/chat.types.ts";
 
 export default function ChatInput({submitInput}: ChatInputProps) {
     const [input, setInput] = React.useState('');

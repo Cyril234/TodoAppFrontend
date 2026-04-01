@@ -1,22 +1,17 @@
 import Box from "@mui/material/Box";
 import {Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
-
-
-type chatMessage = {
-    role:string;
-    content:string;
-};
+import type {ChatMessageType} from "../shared/types/chat.types.ts";
 
 type ChatMessagesProps = {
-    submitInput: chatMessage[];
+    submitInput: ChatMessageType[];
 };
 
 export default function ChatInput({submitInput}: ChatMessagesProps) {
     console.log("*****************************")
     console.log(submitInput)
 
-    function messageD(message:chatMessage) {
+    function messageD(message:ChatMessageType) {
         console.log(message)
         if(message.role === "user") {
             return(
@@ -38,7 +33,7 @@ export default function ChatInput({submitInput}: ChatMessagesProps) {
     return (
         <Box sx={{overflow: 'auto'}}>
             {
-                submitInput.map((message:chatMessage) => (
+                submitInput.map((message:ChatMessageType) => (
                     messageD(message)
                 ))
             }

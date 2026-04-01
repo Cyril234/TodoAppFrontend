@@ -14,24 +14,40 @@ import Divider from "@mui/material/Divider";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-type Todo = {
+/*type Todo = {
     title: string;
     note: string;
     checked: boolean;
     tags: {
-        priority: 'very low' | 'low' | 'medium' | 'high' | 'very high';
+        priority: Priority;
+        deadline: [string, string];
+    };
+};*/
+
+type Todo = {
+    _id: string;
+    userId?: string;
+    todoListId?: string;
+    title: string;
+    note: string;
+    checked: boolean;
+    tags: {
+        priority: Priority;
         deadline: [string, string];
     };
 };
+
 
 type TodoInformationProps = {
     todo: Todo;
     open: boolean;
     onClose: () => void;
     onOpen: () => void;
-    updateTodo: (updatedTodo: Todo, note: string) => void;
-    deleteTodo: (updatedTodo: Todo) => void;
+    updateTodo: (updatedTodo: Todo, title: string, note: string, priority: Priority, dateRange: [string, string]) => void;
+    deleteTodo: (todo: Todo) => void;
 };
+
+type Priority = 'very low' | 'low' | 'medium' | 'high' | 'very high';
 
 export default function TodoInformation({todo, open, onClose, onOpen, updateTodo, deleteTodo}: TodoInformationProps) {
     const [note, setNote] = React.useState(todo.note);
@@ -71,6 +87,7 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
                         placeholder="title"
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
+                        sx={{marginBottom: 2}}
                     />
                     <TextField
                         style={{width: "100%"}}
@@ -79,8 +96,9 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
                         multiline
                         onChange={(e) => setNote(e.target.value)}
                         value={note}
+                        sx={{marginBottom: 2}}
                     />
-                    <FormControl variant="standard">
+                    <FormControl variant="standard" sx={{marginBottom: 2}}>
                         <InputLabel id="demo-simple-select-standard-label">priority</InputLabel>
                         <Select
                             labelId="demo-simple-select-standard-label"
@@ -107,7 +125,7 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
 
             <Divider/>
 
-            <Button variant="contained" onClick={() => {
+            <Button variant="contained" sx={{margin: 2}} onClick={() => {
                 updateTodo(todo, title, note, priority, dateRange);
                 onClose();
             }}>Save</Button>
@@ -125,6 +143,7 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
                     anchor={'right'}
                     open={open}
                     onOpen={onOpen}
+                    onClose={onClose}
                 >
                     {list('right')}
                 </SwipeableDrawer>

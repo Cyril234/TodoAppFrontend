@@ -6,7 +6,6 @@ import {useSearchParams} from "react-router-dom";
 import AddTodoDialog from "./AddTodoDialog"
 import TodoListItem from "./TodoListItem"
 
-
 type Todo = {
     _id: string;
     userId?: string;
@@ -15,23 +14,18 @@ type Todo = {
     note: string;
     checked: boolean;
     tags: {
-        priority: 'very low' | 'low' | 'medium' | 'high' | 'very high';
+        priority: Priority;
         deadline: [string, string];
     };
 };
+
+type Priority = 'very low' | 'low' | 'medium' | 'high' | 'very high';
 
 export default function Todos() {
     const [searchParams] = useSearchParams();
     const tab = searchParams.get("tab");
     const todoListId = searchParams.get("id");
-    const [todoList, setTodoList] = React.useState<
-        Array<{
-            title: string;
-            note: string;
-            checked: boolean;
-            tags: { priority: string; deadline: [string, string] };
-        }>
-    >([]);
+    const [todoList, setTodoList] = React.useState<Todo[]>([]);
 
     async function addTodo(todo: Todo) {
         try {
@@ -115,7 +109,7 @@ export default function Todos() {
         addTodo(todo);
     };
 
-    async function updateTodo(todo: Todo, title:string, note: string, priority: string, deadline: [string, string]) {
+    async function updateTodo(todo: Todo, title:string, note: string, priority: Priority, deadline: [string, string]) {
 
         try {
             todo.title = title;
@@ -167,7 +161,7 @@ export default function Todos() {
             });
 
             if (!res.ok) {
-                throw new Error(res.error);
+                throw new Error(res.statusText);
             }
 
             const response = await res.json();
@@ -195,7 +189,7 @@ export default function Todos() {
                 <AddTodoDialog onClose={onClose}/>
             </div>
 
-            <List sx={{width: '100%', bgcolor: 'background.paper'}}>
+            <List sx={{width: '100%'}}>
                 {todoList.map((value, index) => {
                     const key = `${value.title}`;
                     return (

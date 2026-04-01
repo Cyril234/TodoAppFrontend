@@ -12,6 +12,7 @@ export default function DateRangePicker({ onChange, existingRange }: DateRangePi
 
     return (
         <Flatpickr
+            style={{marginBottom: 2}}
             placeholder="Select time period"
             options={{
                 mode: "range",

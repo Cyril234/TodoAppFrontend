@@ -58,7 +58,7 @@ export default function AccountMenu() {
 
     return (
         <React.Fragment>
-            <Box sx={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
+            <Box sx={{display: 'flex', alignItems: 'center', textAlign: 'center', marginBottom: 1, marginTop: 1}}>
                 <IconButton
                     onClick={handleClick}
                     size="small"

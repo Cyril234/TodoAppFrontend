@@ -5,6 +5,7 @@
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
     "flatpickr": "^4.6.13",
+    "ollama": "^0.6.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-flatpickr": "^4.0.11",

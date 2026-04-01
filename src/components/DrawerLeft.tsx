@@ -10,10 +10,13 @@ import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerro
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import FilterNoneOutlinedIcon from '@mui/icons-material/FilterNoneOutlined';
+import AssistantRoundedIcon from '@mui/icons-material/AssistantRounded';
 
 import {useNavigate, useSearchParams} from "react-router-dom";
 import AddTodoListDialog from "./AddTodoListDialog.tsx";
 import {useEffect} from "react";
+import design from '../../design.json';
+
 
 type TodoList = {
     name: string;
@@ -133,12 +136,12 @@ function DrawerLeft() {
 
 
     return (
-        <div>
-            <AccountMenu/>
+        <div style={{backgroundColor: design.backgroundColourGray, height: "100vh"}}>
+            <AccountMenu />
             <Divider/>
 
-            <List>
-                {[{name: 'Today', _id: "0", icon: <TodayOutlinedIcon/>}, {name: 'This Weak', _id: "1", icon: <DateRangeOutlinedIcon/>}, {name: 'Important', _id: "2", icon: <ReportGmailerrorredOutlinedIcon/>}, {name: 'All', _id: "3", icon: <FilterNoneOutlinedIcon/>}].map((todolist, index) => (
+            <List sx={{bgcolor: design.backgroundColourGray,}}>
+                {[{name: 'AI-Assistant', _id: "4", icon: <AssistantRoundedIcon/>},{name: 'Today', _id: "0", icon: <TodayOutlinedIcon/>}, {name: 'This Weak', _id: "1", icon: <DateRangeOutlinedIcon/>}, {name: 'Important', _id: "2", icon: <ReportGmailerrorredOutlinedIcon/>}, {name: 'All', _id: "3", icon: <FilterNoneOutlinedIcon/>}].map((todolist, index) => (
                     <ListItemButton
                         selected={selectedIndex === index}
                         onClick={() => handleListItemClick(index, todolist)}
@@ -153,7 +156,7 @@ function DrawerLeft() {
 
             </List>
             <Divider/>
-            <List>
+            <List sx={{bgcolor: design.backgroundColourGray,}}>
                 {todoLists.map((todoList, index) => (
                     <ListItemButton
                         selected={selectedIndex === index + 4}
@@ -167,7 +170,8 @@ function DrawerLeft() {
                     </ListItemButton>
                 ))}
             </List>
-            <AddTodoListDialog onClose={addTodoList}/>
+            <AddTodoListDialog position="fixed" style={{ top: 'auto', bottom: 30 }} onClose={addTodoList} />
+
         </div>
     )
 }

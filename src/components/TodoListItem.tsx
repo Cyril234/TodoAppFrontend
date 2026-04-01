@@ -10,8 +10,7 @@ import HorizontalRuleRoundedIcon from '@mui/icons-material/HorizontalRuleRounded
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-
-
+import design from '../../design.json';
 import TodoInformation from "./TodoInformation"
 import {Chip} from "@mui/material";
 import Stack from "@mui/material/Stack";
@@ -24,7 +23,7 @@ type Todo = {
     note: string;
     checked: boolean;
     tags: {
-        priority: 'very low' | 'low' | 'medium' | 'high' | 'very high';
+        priority: Priority;
         deadline: [string, string];
     };
 };
@@ -34,11 +33,14 @@ type TodoListItemProps = {
     todo: Todo;
     index: number;
     checkTodo: (_id: string) => void;
-    updateTodo: (updatedTodo: Todo, title: string, note: string, priority: string, deadline: [string, string]) => void;
-    deleteTodo: (updatedTodo: Todo) => void;
+    updateTodo: (updatedTodo: Todo, title: string, note: string, priority: Priority, deadline: [string, string]) => void;
+    deleteTodo: (todo: Todo) => void;
 };
 
-function TodoListItem({key, todo, index, checkTodo, updateTodo, deleteTodo}: TodoListItemProps) {
+type Priority = 'very low' | 'low' | 'medium' | 'high' | 'very high';
+
+
+function TodoListItem({todo, index, checkTodo, updateTodo, deleteTodo}: TodoListItemProps) {
     const [infoOpen, setInfoOpen] = React.useState(false);
 
     const handleOpenInfo = () => {
@@ -82,7 +84,7 @@ function TodoListItem({key, todo, index, checkTodo, updateTodo, deleteTodo}: Tod
     const labelId = `todo-checkbox-${index}`;
 //onClick={() => setInfoOpen(false)}
     return (
-        <ListItem disablePadding>
+        <ListItem disablePadding sx={{marginBottom: 1, bgcolor: design.backgroundColourGray, borderRadius: 2}}>
             <ListItemButton role={undefined} dense onClick={handleOpenInfo}>
                 <ListItemIcon>
                     <Checkbox

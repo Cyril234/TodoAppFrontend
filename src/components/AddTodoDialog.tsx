@@ -50,7 +50,8 @@ export default function AddTodoDialog({onClose}: any) {
     };
 
     const handleClose = () => {
-        if (searchParams.get("id").length <= 4) {
+        let id = searchParams.get("id");
+        if (id !== null && id.length <= 4) {
             onClose(
                 {
                     userId: localStorage.getItem("userId"),

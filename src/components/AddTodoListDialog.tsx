@@ -7,11 +7,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import {useEffect} from "react";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import design from '../../design.json';
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialogContent-root': {
@@ -42,9 +45,15 @@ export default function AddTodoDialog({onClose}: any) {
 
     return (
         <React.Fragment>
-            <div onClick={handleClickOpen}>
-                <AddIcon/> Add Todolist
-            </div>
+            <ListItemButton
+                onClick={handleClickOpen}
+                sx={{bgcolor: design.backgroundColourGray,}}
+            >
+                <ListItemIcon>
+                    <AddIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Add Todolist"/>
+            </ListItemButton>
 
             <BootstrapDialog
                 onClose={() => setOpen(false)}

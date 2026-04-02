@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccountMenu from "./AccountMenu.tsx";
-import TodoListMenu from "../todos/TodoListMenu.tsx";
+import TodoListMenu from "./TodoListMenu.tsx";
 import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
@@ -159,8 +159,8 @@ function DrawerLeft() {
             <List sx={{bgcolor: design.backgroundColourGray,}}>
                 {todoLists.map((todoList, index) => (
                     <ListItemButton
-                        selected={selectedIndex === index + 4}
-                        onClick={() => handleListItemClick(index + 4, todoList)}
+                        selected={selectedIndex === index + 5}
+                        onClick={() => handleListItemClick(index + 5, todoList)}
                         key={todoList._id}
                     >
                         <ListItemIcon>

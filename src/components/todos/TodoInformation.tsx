@@ -4,13 +4,13 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import TextField from '@mui/material/TextField';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Button from '@mui/material/Button';
-import DateRangePicker from "./DateRangePicker.tsx"
+import DateRangePicker from "../DateRangePicker.tsx"
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-import type {Todo} from "./shared/types/common.types.ts";
+import type {Todo} from "../shared/types/common.types.ts";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -56,8 +56,8 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
             <Box sx={{margin: 2}}>
 
                 <FormControl variant="standard" fullWidth={true}>
-
                     <TextField
+                        label="title"
                         style={{width: "100%"}}
                         id="outlined-textarea"
                         placeholder="title"
@@ -66,6 +66,7 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
                         sx={{marginBottom: 2}}
                     />
                     <TextField
+                        label="note"
                         style={{width: "100%"}}
                         id="outlined-textarea"
                         placeholder="Note"
@@ -74,7 +75,7 @@ export default function TodoInformation({todo, open, onClose, onOpen, updateTodo
                         value={note}
                         sx={{marginBottom: 2}}
                     />
-                    <FormControl variant="standard" sx={{marginBottom: 2}}>
+                    <FormControl sx={{marginBottom: 2}}>
                         <InputLabel id="demo-simple-select-standard-label">priority</InputLabel>
                         <Select
                             labelId="demo-simple-select-standard-label"

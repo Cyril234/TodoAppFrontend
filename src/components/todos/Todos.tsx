@@ -3,10 +3,10 @@ import List from '@mui/material/List';
 
 import {useSearchParams} from "react-router-dom";
 
-import AddTodoDialog from "./AddTodoDialog"
-import TodoListItem from "./TodoListItem"
+import AddTodoDialog from "./AddTodoDialog.tsx"
+import TodoListItem from "./TodoListItem.tsx"
 
-import type {Todo, Priority} from "./shared/types/common.types.ts";
+import type {Todo, Priority} from "../shared/types/common.types.ts";
 
 export default function Todos() {
     const [searchParams] = useSearchParams();

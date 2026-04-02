@@ -10,11 +10,11 @@ import HorizontalRuleRoundedIcon from '@mui/icons-material/HorizontalRuleRounded
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import design from '../../design.json';
-import TodoInformation from "./TodoInformation"
+import design from '../../../design.json';
+import TodoInformation from "./TodoInformation.tsx"
 import {Chip} from "@mui/material";
 import Stack from "@mui/material/Stack";
-import type {Todo, Priority} from "./shared/types/common.types.ts";
+import type {Todo, Priority} from "../shared/types/common.types.ts";
 
 
 type TodoListItemProps = {
@@ -67,7 +67,7 @@ function TodoListItem({todo, index, checkTodo, updateTodo, deleteTodo}: TodoList
                 );
             }
         } else {
-            if(deadline[0] < new Date().toISOString().split('T')[0]) {
+            if(deadline[1] < new Date().toISOString().split('T')[0]) {
                 return (
                     <Chip icon={<CalendarMonthIcon/>} label={deadline[0] + " - " + deadline[1]} variant="outlined" sx={{ '& .MuiChip-icon': { color: "#e0483d" }}}/>
                 );

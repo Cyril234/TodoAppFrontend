@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AccountMenu from "./AccountMenu.tsx";
-import TodoListMenu from "./TodoListMenu.tsx";
+import TodoListMenu from "../todos/TodoListMenu.tsx";
 import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
@@ -15,7 +15,7 @@ import AssistantRoundedIcon from '@mui/icons-material/AssistantRounded';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import AddTodoListDialog from "./AddTodoListDialog.tsx";
 import {useEffect} from "react";
-import design from '../../design.json';
+import design from '../../../design.json';
 
 
 type TodoList = {

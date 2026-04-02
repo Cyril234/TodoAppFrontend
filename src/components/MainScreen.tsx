@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
-import Todos from './Todos.tsx'
+import Todos from './todos/Todos.tsx'
 import Chat from './aiChat/Chat.tsx'
-import DrawerLeft from './DrawerLeft.tsx'
+import DrawerLeft from './DrawerLeft/DrawerLeft.tsx'
 import design from '../../design.json';
 import {useSearchParams} from "react-router-dom";
 

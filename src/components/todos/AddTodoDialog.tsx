@@ -15,7 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {type SelectChangeEvent} from '@mui/material/Select';
-import DateRangePicker from "./DateRangePicker.tsx"
+import DateRangePicker from "../DateRangePicker.tsx"
 import {useSearchParams} from "react-router-dom";
 import {useEffect} from "react";
 
@@ -36,13 +36,32 @@ export default function AddTodoDialog({onClose}: any) {
     const [title, setTitle] = React.useState('');
     const [note, setNote] = React.useState('');
     const [priority, setPriority] = React.useState('');
-    const [dateRange, setDateRange] = React.useState(["", ""]);
+    const [dateRange, setDateRange] = React.useState(["",""] as [string, string]);
+    const todoListId = searchParams.get("id");
 
     useEffect(() => {
         setTitle("");
         setNote("");
-        setPriority("");
-        setDateRange(["", ""]);
+
+        if(todoListId === "2") {
+            setPriority("very high");
+        } else {
+            setPriority("");
+        }
+
+        if(todoListId === "0") {
+            const date = new Date().toISOString().split('T')[0]
+            setDateRange([date, date]);
+        } else if (todoListId === "1") {
+            const date1 = new Date();
+            date1.setDate(date1.getDate() - date1.getDay() + 1);
+            const date2 = new Date();
+            date2.setDate(date2.getDate() - date2.getDay() + 7);
+            setDateRange([date1.toISOString().split('T')[0], date2.toISOString().split('T')[0]]);
+        }else {
+            setDateRange(["", ""]);
+        }
+
     }, [open]);
 
     const handleClickOpen = () => {
@@ -170,7 +189,7 @@ export default function AddTodoDialog({onClose}: any) {
                                 </Select>
                             </FormControl>
 
-                            <DateRangePicker onChange={(range) => dateHandler(range)}/>
+                            <DateRangePicker existingRange={dateRange} onChange={(range) => dateHandler(range)}/>
                         </FormControl>
 
                     </Box>
